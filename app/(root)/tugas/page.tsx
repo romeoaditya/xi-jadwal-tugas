@@ -20,7 +20,7 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Calendar} from "@/components/ui/calendar";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
-import {CalendarIcon, Plus, Trash2, Pencil} from "lucide-react";
+import {CalendarIcon, Plus, Trash2, Pencil, Eye} from "lucide-react";
 import {format} from "date-fns";
 import {useEffect, useState} from "react";
 import {toast} from "sonner";
@@ -36,6 +36,7 @@ interface Task {
 
 export default function TugasPage() {
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [viewTask, setViewTask] = useState<Task | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filterDay, setFilterDay] = useState<string | undefined>();
   const [filterDate, setFilterDate] = useState<Date | undefined>();
@@ -79,6 +80,7 @@ export default function TugasPage() {
       toast.error("Judul dan tanggal harus diisi.");
       return;
     }
+    const formattedDate = date.toLocaleDateString("sv-SE");
 
     if (editMode && editingTaskId) {
       const {error} = await supabase
@@ -86,7 +88,7 @@ export default function TugasPage() {
         .update({
           title,
           description: desc,
-          date: date.toISOString().slice(0, 10), // format YYYY-MM-DD
+          date: date.toLocaleDateString("sv-SE"), // hasil: "2025-07-30"
         })
         .eq("id", editingTaskId);
 
@@ -100,7 +102,7 @@ export default function TugasPage() {
       const {error} = await supabase.from("tugas").insert({
         title,
         description: desc,
-        date: date.toISOString().slice(0, 10),
+        date: formattedDate,
       });
 
       if (error) {
@@ -241,9 +243,9 @@ export default function TugasPage() {
           Tidak ada tugas yang ditemukan.
         </p>
       ) : (
-        <div className="w-full overflow-auto border rounded-lg">
+        <div className="w-full overflow-x-auto border rounded-lg max-h-[400px]">
           <table className="w-full text-sm">
-            <thead className="bg-muted text-muted-foreground">
+            <thead className="bg-muted text-muted-foreground sticky top-0 z-10">
               <tr>
                 <th className="text-left px-4 py-2 w-1/4">Judul</th>
                 <th className="text-left px-4 py-2 w-2/5">Deskripsi</th>
@@ -253,34 +255,65 @@ export default function TugasPage() {
             </thead>
             <tbody>
               {filteredTasks.map((task) => (
-                <tr key={task.id} className="border-t">
-                  <td className="px-4 py-2">{task.title}</td>
-                  <td className="px-4 py-2">{task.description || "-"}</td>
-                  <td className="px-4 py-2">
+                <tr
+                  key={task.id}
+                  className="border-t hover:bg-indigo-50 cursor-pointer"
+                >
+                  <td
+                    className="px-4 py-2 whitespace-nowrap "
+                    onClick={() => setViewTask(task)}
+                  >
+                    {task.title}
+                  </td>
+                  <td
+                    className="px-4 py-2 truncate max-w-[150px]"
+                    onClick={() => setViewTask(task)}
+                  >
+                    {task.description || "-"}
+                  </td>
+                  <td
+                    className="px-4 py-2 whitespace-nowrap"
+                    onClick={() => setViewTask(task)}
+                  >
                     {format(new Date(task.date), "dd MMMM yyyy")}
                   </td>
-                  <td className="px-4 py-2 flex gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleEdit(task)}
-                    >
-                      <Pencil className="w-4 h-4 mr-1" />
-                      Edit
-                    </Button>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => setConfirmDeleteId(task.id)}
-                    >
-                      <Trash2 className="w-4 h-4 mr-1" />
-                      Hapus
-                    </Button>
+                  <td className="px-4 py-2">
+                    <div className="flex gap-2 items-center whitespace-nowrap">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleEdit(task)}
+                      >
+                        <Pencil className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => setConfirmDeleteId(task.id)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
+          <Dialog open={!!viewTask} onOpenChange={() => setViewTask(null)}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>{viewTask?.title}</DialogTitle>
+              </DialogHeader>
+              <p className="whitespace-pre-wrap">
+                {viewTask?.description || "(Tidak ada deskripsi)"}
+              </p>
+              <p className="text-sm text-muted-foreground mb-2">
+                {viewTask
+                  ? format(new Date(viewTask.date), "dd MMMM yyyy")
+                  : "-"}
+              </p>
+            </DialogContent>
+          </Dialog>
           <Dialog
             open={!!confirmDeleteId}
             onOpenChange={() => setConfirmDeleteId(null)}
