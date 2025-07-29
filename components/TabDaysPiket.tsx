@@ -1,12 +1,12 @@
 "use client";
 
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {jadwalMapel} from "@/data/jadwal";
-import CardMapel from "./CardMapel";
+import {jadwalPiket} from "@/data/jadwalPiket";
 import {motion} from "framer-motion";
 import {useState} from "react";
+import TabelSiswaPiket from "./TableSiswaPiket";
 
-export default function TabDays() {
+export default function TabDaysPiket() {
   const days = [
     {key: "senin", label: "Senin"},
     {key: "selasa", label: "Selasa"},
@@ -42,17 +42,13 @@ export default function TabDays() {
               exit={{opacity: 0, y: -10}}
               transition={{duration: 0.2}}
             >
-              <CardMapel
-                data={jadwalMapel[day.key as keyof typeof jadwalMapel]}
+              <TabelSiswaPiket
+                data={jadwalPiket[day.key as keyof typeof jadwalPiket]}
               />
             </motion.div>
           ) : (
             // Render kosong agar tidak lompat layout
-            <div className="invisible h-0 overflow-hidden">
-              <CardMapel
-                data={jadwalMapel[day.key as keyof typeof jadwalMapel]}
-              />
-            </div>
+            <div className="invisible h-0 overflow-hidden"></div>
           )}
         </TabsContent>
       ))}

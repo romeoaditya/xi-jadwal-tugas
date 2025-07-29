@@ -1,5 +1,13 @@
 "use client";
-import {AlarmClock, HouseIcon, ListCheck, NotebookPen} from "lucide-react";
+
+import {
+  AlarmClock,
+  ListCheck,
+  NotebookPen,
+  Menu,
+  X,
+  BrushCleaning,
+} from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -9,39 +17,39 @@ import {
 import {usePathname} from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import {useState} from "react";
+import {motion, AnimatePresence} from "framer-motion";
 
-// Navigation links array to be used in both desktop and mobile menus
+// Links data
 const navigationLinks = [
-  {href: "/", label: "Jadwal", icon: AlarmClock, active: true},
+  {href: "/", label: "Jadwal Mapel", icon: AlarmClock},
+  {href: "/piket", label: "Jadwal Piket", icon: BrushCleaning},
   {href: "/tugas", label: "Tugas", icon: ListCheck},
   {href: "/catatan", label: "Catatan", icon: NotebookPen},
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <header className="border-b px-4 md:px-6">
       <div className="flex h-16 items-center justify-between gap-4">
-        {/* Left side */}
-        <div className="flex flex-1 items-center gap-2">
-          {/* Mobile menu trigger */}
-
-          {/* Logo */}
-          <div className="flex items-center">
-            <Link href="/" className="text-primary hover:text-primary/90">
-              {/* <Logo /> */}
-              <Image
-                src="/images/logo_tm.png"
-                alt="Logo TM"
-                width={500}
-                height={500}
-                style={{width: "48px", height: "48px", objectFit: "contain"}}
-              />
-            </Link>
-          </div>
+        {/* Logo */}
+        <div className="flex items-center">
+          <Link href="/" className="text-primary hover:text-primary/90">
+            <Image
+              src="/images/logo_tm.png"
+              alt="Logo TM"
+              width={48}
+              height={48}
+              style={{objectFit: "contain"}}
+            />
+          </Link>
         </div>
-        {/* Middle area */}
-        <NavigationMenu>
+
+        {/* Desktop Menu */}
+        <NavigationMenu className="hidden md:flex">
           <NavigationMenuList className="gap-2">
             {navigationLinks.map((link, index) => {
               const Icon = link.icon;
@@ -56,11 +64,7 @@ export default function Navbar() {
                         : "text-muted-foreground hover:text-primary hover:bg-muted/50"
                     }`}
                   >
-                    <Icon
-                      size={16}
-                      className="text-muted-foreground/80"
-                      aria-hidden="true"
-                    />
+                    <Icon size={16} aria-hidden="true" />
                     <span>{link.label}</span>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
@@ -68,9 +72,49 @@ export default function Navbar() {
             })}
           </NavigationMenuList>
         </NavigationMenu>
-        {/* Right side */}
-        <div className="flex flex-1 items-center justify-end gap-2"></div>
+
+        {/* Hamburger Button */}
+        <button
+          className="md:hidden"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
       </div>
+
+      {/* Animated Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            key="mobile-menu"
+            initial={{opacity: 0, y: -10}}
+            animate={{opacity: 1, y: 0}}
+            exit={{opacity: 0, y: -10}}
+            transition={{duration: 0.2}}
+            className="md:hidden mt-2 flex flex-col space-y-2 pb-4"
+          >
+            {navigationLinks.map((link, index) => {
+              const Icon = link.icon;
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={index}
+                  href={link.href}
+                  className={`flex items-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${
+                    isActive
+                      ? "bg-muted text-primary"
+                      : "text-muted-foreground hover:text-primary hover:bg-muted/50"
+                  }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Icon size={16} />
+                  <span>{link.label}</span>
+                </Link>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 }
