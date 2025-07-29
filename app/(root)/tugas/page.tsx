@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/sheet";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -20,7 +19,7 @@ import {Button} from "@/components/ui/button";
 import {Input} from "@/components/ui/input";
 import {Calendar} from "@/components/ui/calendar";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover";
-import {CalendarIcon, Plus, Trash2, Pencil, Eye} from "lucide-react";
+import {CalendarIcon, Plus, Trash2, Pencil} from "lucide-react";
 import {format} from "date-fns";
 import {useEffect, useState} from "react";
 import {toast} from "sonner";

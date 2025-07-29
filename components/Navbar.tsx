@@ -1,5 +1,5 @@
 "use client";
-import {HouseIcon, InboxIcon} from "lucide-react";
+import {AlarmClock, HouseIcon, ListCheck, NotebookPen} from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -12,8 +12,9 @@ import Link from "next/link";
 
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  {href: "/", label: "Jadwal", icon: HouseIcon, active: true},
-  {href: "/tugas", label: "Tugas", icon: InboxIcon},
+  {href: "/", label: "Jadwal", icon: AlarmClock, active: true},
+  {href: "/tugas", label: "Tugas", icon: ListCheck},
+  {href: "/catatan", label: "Catatan", icon: NotebookPen},
 ];
 
 export default function Navbar() {

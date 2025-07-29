@@ -36,8 +36,14 @@ const [senin, selasa, rabu, kamis, jumat] = generateJadwal([
     {nama: "Bahasa Indonesia", waktu: "11.15 - 11.55"},
     {nama: "Istirahat", waktu: "11.55 - 12.55"},
     {nama: "Pendidikan Agama Islam (PAI)", waktu: "12.55 - 13.35"},
-    {nama: "Projek Kreatif dan Kewirausahaan (PKK)", waktu: "13.35 - 14.15"},
-    {nama: "Projek Kreatif dan Kewirausahaan (PKK)", waktu: "14.15 - 14.55"},
+    {
+      nama: "Pendidikan Jasmani (PJOK)",
+      waktu: "13.35 - 14.15",
+    },
+    {
+      nama: "Pendidikan Jasmani (PJOK)",
+      waktu: "14.15 - 14.55",
+    },
   ],
   [
     {nama: "Bahasa Jepang", waktu: "06.00 - 07.10"},
