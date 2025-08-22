@@ -25,6 +25,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {Calendar} from "@/components/ui/calendar";
+import {Metadata} from "next";
 
 interface Note {
   id: string;
@@ -34,7 +35,7 @@ interface Note {
   content: string;
 }
 
-export default function Page() {
+export default function CatatanPage() {
   const [notes, setNotes] = useState<Note[]>([]);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -59,22 +60,6 @@ export default function Page() {
     fetchNotes();
   }, []);
 
-  //   const handleUploadImage = async (file: File): Promise<string | null> => {
-  //     const fileName = `${Date.now()}-${file.name}`;
-  //     const {data, error} = await supabase.storage
-  //       .from("catatan-media")
-  //       .upload(fileName, file);
-
-  //     if (error) {
-  //       toast.error("Gagal mengunggah gambar.");
-  //       return null;
-  //     }
-
-  //     const {data: publicUrl} = supabase.storage
-  //       .from("catatan-media")
-  //       .getPublicUrl(fileName);
-  //     return publicUrl?.publicUrl || null;
-  //   };
   const resetForm = () => {
     setTextInput("");
     setDesc("");

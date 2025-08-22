@@ -1,7 +1,11 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import TabDays from "@/components/TabDays";
+import {Metadata} from "next";
 import React, {ReactNode} from "react";
+
+export const metadata: Metadata = {
+  title: "Mata Pelajaran",
+};
 
 const RootLayout = async ({children}: {children: ReactNode}) => {
   return (

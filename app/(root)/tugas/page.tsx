@@ -53,7 +53,7 @@ export default function TugasPage() {
       const {data, error} = await supabase
         .from("tugas")
         .select("*")
-        .order("date", {ascending: true});
+        .order("date", {ascending: false}); // urut terbaru
 
       if (error) {
         toast.error("Gagal mengambil data dari Supabase.");
@@ -89,7 +89,8 @@ export default function TugasPage() {
           description: desc,
           date: date.toLocaleDateString("sv-SE"), // hasil: "2025-07-30"
         })
-        .eq("id", editingTaskId);
+        .eq("id", editingTaskId)
+        .order("date", {ascending: false}); // urut terbaru
 
       if (error) {
         toast.error("Gagal mengedit tugas.");

@@ -39,8 +39,8 @@ export default function Navbar() {
         <div className="flex items-center">
           <Link href="/" className="text-primary hover:text-primary/90">
             <Image
-              src="/images/logo_tm.png"
-              alt="Logo TM"
+              src="/images/logo_rpl_2.png"
+              alt="Logo RPL"
               width={48}
               height={48}
               style={{objectFit: "contain"}}
