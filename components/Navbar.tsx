@@ -7,6 +7,7 @@ import {
   Menu,
   X,
   BrushCleaning,
+  ListChecks,
 } from "lucide-react";
 import {
   NavigationMenu,
@@ -26,6 +27,11 @@ const navigationLinks = [
   {href: "/piket", label: "Jadwal Piket", icon: BrushCleaning},
   {href: "/tugas", label: "Tugas", icon: ListCheck},
   {href: "/catatan", label: "Catatan", icon: NotebookPen},
+  {
+    href: "https://go-react-fullstack-production.up.railway.app/",
+    label: "Todo List",
+    icon: ListChecks,
+  },
 ];
 
 export default function Navbar() {
